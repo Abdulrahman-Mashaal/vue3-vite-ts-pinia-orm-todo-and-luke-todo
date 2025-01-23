@@ -23,18 +23,15 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { computed, defineComponent } from "vue";
-  import { User } from "@/models/User";
+<script setup lang="ts">
+  import { computed } from "vue";
+  import User from "@/models/User";
   import Todo from "@/models/Todo";
   import { useRepo } from "pinia-orm";
-
-  export default defineComponent({
-    props: {
-      todoId: { type: String, required: true },
-    },
-    setup(props) {
-      const users = computed(() => useRepo(User).orderBy("name").get());
+  const props = defineProps({
+    todoId: { type: String, required: true },
+  });
+  const users = computed(() => useRepo(User).orderBy("name").get());
 
       const todo = computed(() =>
         useRepo(Todo).with("assignee").find(props.todoId)
@@ -46,13 +43,6 @@
         });
       };
 
-      return {
-        users,
-        todo,
-        update,
-      };
-    },
-  });
 </script>
 
 <style scoped>

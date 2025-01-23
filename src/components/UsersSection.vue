@@ -10,25 +10,16 @@
   </section>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from "vue";
-  import { User } from "@/models/User";
+<script setup lang="ts">
+  import User from "@/models/User";
   import UserList from "./UserList.vue";
   import { useRepo } from "pinia-orm";
 
-  export default defineComponent({
-    components: {
-      UserList,
-    },
-
-    methods: {
-      add() {
-        useRepo(User).insert({
-          data: { name: "" },
-        });
-      },
-    },
-  });
+  function add() {
+    useRepo(User).insert({
+      data: { name: "" },
+    });
+  }
 </script>
 
 <style scoped>

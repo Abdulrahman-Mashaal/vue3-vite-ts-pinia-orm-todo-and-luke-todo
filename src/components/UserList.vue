@@ -25,32 +25,22 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { User } from "@/models/User";
+<script setup lang="ts">
+  import User from "@/models/User";
   import { useRepo } from "pinia-orm";
   import { computed } from "vue";
-
-  export default {
-    setup() {
-      const userRepo = useRepo(User);
+  const userRepo = useRepo(User);
       
       const users = computed(() => userRepo.with("todos").get());
       
-      const destroy = (user) => {
+      function destroy(user:User) {
         useRepo(User).destroy(user.id);
       };
       
-      const update = (user, title) => {
+      function update (user: User, title: string) {
         useRepo(User).save({ id: user.id, name: title });
       };
-      return {
-        users,
-        update,
-        destroy,
-      };
-    },
-    methods: {},
-  };
+  
 </script>
 <style scoped lang="scss">
   .user-list {

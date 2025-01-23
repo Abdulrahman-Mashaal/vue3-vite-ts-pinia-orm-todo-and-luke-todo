@@ -9,26 +9,12 @@
   </v-container>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from "vue";
-
+<script setup lang="ts">
   import AppHeader from "@/components/AppHeader.vue";
   import AppDescription from "@/components/AppDescription.vue";
   import UsersSectionVue from "@/components/UsersSection.vue";
   import TodosSection from "@/components/TodosSection.vue";
 
-  export default defineComponent({
-    name: "App",
-    components: {
-      AppHeader,
-      AppDescription,
-      UsersSectionVue,
-      TodosSection,
-    },
-    setup() {
-      return {};
-    },
-  });
 </script>
 
 <style>

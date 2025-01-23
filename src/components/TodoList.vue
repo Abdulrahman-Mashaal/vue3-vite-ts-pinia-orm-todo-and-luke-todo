@@ -30,40 +30,25 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
   import TodoListAssignee from "./TodoListAssignee.vue";
   import { useTodoStore } from "@/store/modules/todo";
+  import Todo from "@/models/Todo";
 
-  export default {
-    components: {
-      TodoListAssignee,
-    },
+  const todoStore = useTodoStore()
 
-    setup() {
-      const todoStore = useTodoStore();
-
-      const toggle = (todo) => {
-        todoStore.save({
-          id: todo.id,
-          done: !todo.done,
-        });
+      function toggle (todo: Todo) {
+        todo.done = !todo.done;
+        todoStore.save(todo);
       };
 
-      const update = (todo, title) => {
+      function update (todo: Todo, title:string) {
         todoStore.update(todo, title);
       };
 
-      const destroy = (todo) => {
+      function destroy (todo: Todo) {
         todoStore.destroy(todo.id);
       };
-      return {
-        todoStore,
-        toggle,
-        update,
-        destroy,
-      };
-    },
-  };
 </script>
 
 <style scoped>

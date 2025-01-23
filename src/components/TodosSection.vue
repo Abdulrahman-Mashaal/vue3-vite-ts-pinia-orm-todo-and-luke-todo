@@ -11,24 +11,16 @@
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
   import Todo from "@/models/Todo";
   import TodoList from "./TodoList.vue";
   import { useRepo } from "pinia-orm";
 
-  export default {
-    components: {
-      TodoList,
-    },
-
-    methods: {
-      add() {
-        useRepo(Todo).insert({
-          data: { title: "" },
-        });
-      },
-    },
-  };
+  function add() {
+    useRepo(Todo).insert({
+      data: { title: "" },
+    });
+  }
 </script>
 
 <style scoped>

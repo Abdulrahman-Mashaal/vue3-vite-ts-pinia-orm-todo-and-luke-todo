@@ -593,7 +593,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@pinia-orm/normalizr@>=1.9.0":
+"@pinia-orm/normalizr@1.10.1":
   version "1.10.1"
   resolved "https://registry.npmjs.org/@pinia-orm/normalizr/-/normalizr-1.10.1.tgz"
   integrity sha512-DZ4CJBd3JbS0YtmDGXMcJPWXVjI+8/kMxUA9DhIC2DX1nLZISIGRFz+KF1achMIG3ZcdN73Zy5oxjBAEqg630w==
@@ -3467,12 +3467,13 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2, picomatch@^2.2.3:
   resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-pinia-orm@^1.9.1:
-  version "1.9.1"
-  resolved "https://registry.npmjs.org/pinia-orm/-/pinia-orm-1.9.1.tgz"
-  integrity sha512-iYUucN0zJwzufi5SqDcsu3MmwInJJZInE3ywtq4BsR5XKPTMoxi220k8EoRh7wqldCavQuK3K5Fb+E3eev811w==
+pinia-orm@^1.10.1:
+  version "1.10.1"
+  resolved "https://registry.npmjs.org/pinia-orm/-/pinia-orm-1.10.1.tgz"
+  integrity sha512-SMbisL10EF+vIj1tj+r5kpWhzs29Bm8V7wSwJ2JZpDfVKWpwZyTDpSQVgBZNKDaT3707NTF/AWeWn3O88XptWg==
   dependencies:
-    "@pinia-orm/normalizr" ">=1.9.0"
+    "@pinia-orm/normalizr" "1.10.1"
+    vue-demi "^0.14.10"
 
 pinia@^2.0.34, pinia@^2.1.7:
   version "2.3.0"

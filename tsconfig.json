@@ -6,6 +6,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
     "moduleResolution": "node",
     "isolatedModules": true,
     "strict": true,

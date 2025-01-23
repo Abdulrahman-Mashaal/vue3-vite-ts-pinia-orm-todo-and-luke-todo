@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { User } from "@/models/User";
+import User from "@/models/User";
 import { useRepo } from "pinia-orm";
 import data from "@/data";
 
