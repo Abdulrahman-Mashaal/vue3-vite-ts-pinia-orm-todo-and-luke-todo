@@ -1,3 +1,16 @@
+    <script setup lang="ts">
+      import Todo from "@/models/Todo";
+      import TodoList from "./TodoList.vue";
+      import { useRepo } from "pinia-orm";
+      import todoDao from "@/db/dao/todoDao";
+    
+      async function add() {
+        const todo = useRepo(Todo).insert({
+          data: { title: "" },
+        });
+        await todoDao.add(todo);
+      }
+    </script>
 <template>
   <section class="Todos">
     <div class="container">
@@ -11,17 +24,6 @@
   </section>
 </template>
 
-<script setup lang="ts">
-  import Todo from "@/models/Todo";
-  import TodoList from "./TodoList.vue";
-  import { useRepo } from "pinia-orm";
-
-  function add() {
-    useRepo(Todo).insert({
-      data: { title: "" },
-    });
-  }
-</script>
 
 <style scoped>
   .container {

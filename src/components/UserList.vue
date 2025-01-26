@@ -1,3 +1,20 @@
+    <script setup lang="ts">
+      import User from "@/models/User";
+      import { useRepo } from "pinia-orm";
+      import { computed } from "vue";
+      const userRepo = useRepo(User);
+          
+          const users = computed(() => userRepo.with("todos").get());
+          
+          function destroy(user:User) {
+            useRepo(User).destroy(user.id);
+          };
+          
+          function update (user: User, title: string) {
+            useRepo(User).save({ id: user.id, name: title });
+          };
+      
+    </script>
 <template>
   <div class="user-list">
     <v-row v-for="user in users" :key="user.id" class="user-row">
@@ -6,11 +23,7 @@
           class="input"
           :value="user.name"
           placeholder="Type in user's name!"
-          @input="
-            (e) => {
-              update(user, e.target.value);
-            }
-          "
+          @input="(e: InputEvent) => update(user, (e.target as HTMLInputElement).value)"
         />
       </v-col>
       <v-col class="d-flex align-center">
@@ -25,23 +38,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import User from "@/models/User";
-  import { useRepo } from "pinia-orm";
-  import { computed } from "vue";
-  const userRepo = useRepo(User);
-      
-      const users = computed(() => userRepo.with("todos").get());
-      
-      function destroy(user:User) {
-        useRepo(User).destroy(user.id);
-      };
-      
-      function update (user: User, title: string) {
-        useRepo(User).save({ id: user.id, name: title });
-      };
-  
-</script>
 <style scoped lang="scss">
   .user-list {
     padding: 12px;

@@ -1,3 +1,24 @@
+    <script setup lang="ts">
+      import { computed } from "vue";
+      import User from "@/models/User";
+      import Todo from "@/models/Todo";
+      import { useRepo } from "pinia-orm";
+      const props = defineProps({
+        todoId: { type: String, required: true },
+      });
+      const users = computed(() => useRepo(User).orderBy("name").get());
+    
+          const todo = computed(() =>
+            useRepo(Todo).with("assignee").find(props.todoId)
+          );
+          const update = (e) => {
+            useRepo(Todo).save({
+              id: props.todoId,
+              user_id: e.target.value,
+            });
+          };
+    
+    </script>
 <template>
   <div class="TodosAssignee">
     <v-icon>mdi-account</v-icon>
@@ -23,27 +44,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import { computed } from "vue";
-  import User from "@/models/User";
-  import Todo from "@/models/Todo";
-  import { useRepo } from "pinia-orm";
-  const props = defineProps({
-    todoId: { type: String, required: true },
-  });
-  const users = computed(() => useRepo(User).orderBy("name").get());
-
-      const todo = computed(() =>
-        useRepo(Todo).with("assignee").find(props.todoId)
-      );
-      const update = (e) => {
-        useRepo(Todo).save({
-          id: props.todoId,
-          user_id: e.target.value,
-        });
-      };
-
-</script>
 
 <style scoped>
   .TodosAssignee {

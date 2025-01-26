@@ -9,16 +9,11 @@
       <v-btn icon flat @click="toggle(todo)">
         <v-icon>mdi-check</v-icon>
       </v-btn>
-
       <input
         class="input"
         :value="todo.title"
         placeholder="Type in the title of the task!"
-        @input="
-          (e) => {
-            update(todo, e.target.value);
-          }
-        "
+        @input="(e: InputEvent) => update(todo, (e.target as HTMLInputElement).value)"
       />
 
       <TodoListAssignee :todo-id="todo.id" />
@@ -33,6 +28,7 @@
 <script setup lang="ts">
   import TodoListAssignee from "./TodoListAssignee.vue";
   import { useTodoStore } from "@/store/modules/todo";
+  import todoDao from '@/db/dao/todoDao';
   import Todo from "@/models/Todo";
 
   const todoStore = useTodoStore()
@@ -42,8 +38,10 @@
         todoStore.save(todo);
       };
 
-      function update (todo: Todo, title:string) {
+      async function update (todo: Todo, title:string) {
         todoStore.update(todo, title);
+        console.log(todo)
+        await todoDao.update(todo);
       };
 
       function destroy (todo: Todo) {

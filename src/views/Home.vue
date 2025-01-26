@@ -1,3 +1,10 @@
+    <script setup lang="ts">
+      import AppHeader from "@/components/AppHeader.vue";
+      import AppDescription from "@/components/AppDescription.vue";
+      import UsersSectionVue from "@/components/UsersSection.vue";
+      import TodosSection from "@/components/TodosSection.vue";
+    
+    </script>
 <template>
   <v-container>
     <app-header />
@@ -9,13 +16,6 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-  import AppHeader from "@/components/AppHeader.vue";
-  import AppDescription from "@/components/AppDescription.vue";
-  import UsersSectionVue from "@/components/UsersSection.vue";
-  import TodosSection from "@/components/TodosSection.vue";
-
-</script>
 
 <style>
   #app {

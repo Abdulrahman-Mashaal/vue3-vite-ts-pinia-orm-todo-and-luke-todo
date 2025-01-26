@@ -7,9 +7,8 @@ export default class Todo extends Model {
 
   // Fields
   @Uid() declare id: string;
-  @Attr() declare name?: string | null;
   @Attr() declare title?: string | null;
-  @Attr() declare done: boolean;
+  @Attr(false) declare done: boolean
 
   // Relations
   @BelongsTo(() => User, "user_id") declare assignee?: User[];
