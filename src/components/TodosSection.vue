@@ -1,25 +1,29 @@
     <script setup lang="ts">
       import Todo from "@/models/Todo";
       import TodoList from "./TodoList.vue";
-      import { useRepo } from "pinia-orm";
-      import todoDao from "@/db/dao/todoDao";
-    
-      async function add() {
-        const todo = useRepo(Todo).insert({
-          data: { title: "" },
-        });
-        await todoDao.add(todo);
-      }
+      import { useModelStore } from "@/db/dao/useModelStore";
+      const { items, createItem, updateItem, deleteItem } = useModelStore(Todo);
+      const create = async () => {
+        const todo = new Todo();
+        todo.title = '';
+        await createItem(todo);
+      };
+      const remove = async (todo: Todo) => {
+        await deleteItem(todo.id);
+      };
+      const update = async (todo: Todo) => {
+        await updateItem(todo);
+      };
+      
     </script>
 <template>
   <section class="Todos">
     <div class="container">
       <div class="header">
         <h2 class="title">TODOS</h2>
-        <v-btn variant="outlined" @click="add">ADD TODO</v-btn>
+        <v-btn variant="outlined" @click="create">ADD TODO</v-btn>
       </div>
-
-      <TodoList />
+      <TodoList :todos="items" @update="update" @delete="remove" />
     </div>
   </section>
 </template>

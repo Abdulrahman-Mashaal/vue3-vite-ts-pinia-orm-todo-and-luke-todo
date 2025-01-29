@@ -1,9 +1,9 @@
 import * as idb from 'idb';
 
-export const STORE_NAME = 'todos';
-export const DB_NAME = 'todo_db';
+// export const STORE_NAME = 'todos';
+export const DB_NAME = 'todo_data_base';
 export const DB_VERSION = 1;
-export const TXN_WRITE = 'readwrite';
+// export const TXN_WRITE = 'readwrite';
 export const INDEXES = [
     {
         name: 'idx_done',
@@ -13,7 +13,7 @@ export const INDEXES = [
 ];
 
 class DB {
-    static openDB(): Promise<idb.IDBPDatabase> {
+    static openDB(STORE_NAME: string): Promise<idb.IDBPDatabase> {
         return idb.openDB(DB_NAME, DB_VERSION, {
             upgrade(db) {
                 if (db.objectStoreNames.contains(STORE_NAME)) {

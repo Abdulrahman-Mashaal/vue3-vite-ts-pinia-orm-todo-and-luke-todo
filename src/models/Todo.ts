@@ -8,10 +8,10 @@ export default class Todo extends Model {
   // Fields
   @Uid() declare id: string;
   @Attr() declare title?: string | null;
-  @Attr(false) declare done: boolean
+  @Attr(false) declare done: boolean;
 
   // Relations
-  @BelongsTo(() => User, "user_id") declare assignee?: User[];
+  @BelongsTo(() => User, "user_id") declare assignee?: User[] | null;
 
   // static fields() {
   //   return {

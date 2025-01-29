@@ -1,53 +1,54 @@
+    <script setup lang="ts">
+      // import TodoListAssignee from "./TodoListAssignee.vue";
+      import { useTodoStore } from "@/store/modules/todo";
+      import Todo from "@/models/Todo";
+      import { defineEmits } from 'vue';
+    
+      const todoStore = useTodoStore()
+      defineProps<{ todos: Todo[] }>();
+        
+          function updateTodo (todo: Todo, target: string|boolean){
+            if (typeof target === 'string') {
+              todo.title = target;
+            } else {
+              todo.done = target;
+            }
+            todoStore.save(todo);
+            $emit('update', todo);
+
+          }
+          const $emit = defineEmits<{
+            (event: 'update', todo: Todo): void
+            (event: 'delete', todo: Todo): void
+          }>()
+    </script>
 <template>
   <div class="todo-list">
     <div
-      v-for="todo in todoStore.todos"
+      v-for="todo in todos"
       :key="todo.id"
       class="todo"
       :class="{ done: todo.done }"
     >
-      <v-btn icon flat @click="toggle(todo)">
+      <v-btn icon flat @click="updateTodo(todo, !todo.done)">
         <v-icon>mdi-check</v-icon>
       </v-btn>
       <input
         class="input"
         :value="todo.title"
         placeholder="Type in the title of the task!"
-        @input="(e: InputEvent) => update(todo, (e.target as HTMLInputElement).value)"
+        @input="(e: InputEvent) => updateTodo(todo, (e.target as HTMLInputElement).value)"
       />
 
-      <TodoListAssignee :todo-id="todo.id" />
+      <!-- <TodoListAssignee :todo-id="todo.id" /> -->
 
-      <v-btn icon flat @click="destroy(todo)">
+      <v-btn icon flat @click="$emit('delete', todo)">
         <v-icon>mdi-delete-outline</v-icon>
       </v-btn>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-  import TodoListAssignee from "./TodoListAssignee.vue";
-  import { useTodoStore } from "@/store/modules/todo";
-  import todoDao from '@/db/dao/todoDao';
-  import Todo from "@/models/Todo";
-
-  const todoStore = useTodoStore()
-
-      function toggle (todo: Todo) {
-        todo.done = !todo.done;
-        todoStore.save(todo);
-      };
-
-      async function update (todo: Todo, title:string) {
-        todoStore.update(todo, title);
-        console.log(todo)
-        await todoDao.update(todo);
-      };
-
-      function destroy (todo: Todo) {
-        todoStore.destroy(todo.id);
-      };
-</script>
 
 <style scoped>
   .todo-list {
