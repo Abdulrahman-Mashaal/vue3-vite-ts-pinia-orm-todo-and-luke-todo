@@ -1,19 +1,21 @@
     <script setup lang="ts">
       // import TodoListAssignee from "./TodoListAssignee.vue";
-      import { useTodoStore } from "@/store/modules/todo";
       import Todo from "@/models/Todo";
       import { defineEmits } from 'vue';
     
-      const todoStore = useTodoStore()
       defineProps<{ todos: Todo[] }>();
-        
-          function updateTodo (todo: Todo, target: string|boolean){
+      function onInput (todo: Todo, e: Event) {
+            update(todo, (e.target as HTMLInputElement).value);
+          }
+          function update (todo: Todo, target: string|boolean){
+            if (!todo || !todo.id) {
+        throw new Error('Invalid user data provided for update.');
+      }
             if (typeof target === 'string') {
               todo.title = target;
             } else {
               todo.done = target;
             }
-            todoStore.save(todo);
             $emit('update', todo);
 
           }
@@ -30,14 +32,14 @@
       class="todo"
       :class="{ done: todo.done }"
     >
-      <v-btn icon flat @click="updateTodo(todo, !todo.done)">
+      <v-btn icon flat @click="update(todo, !todo.done)">
         <v-icon>mdi-check</v-icon>
       </v-btn>
       <input
         class="input"
         :value="todo.title"
         placeholder="Type in the title of the task!"
-        @input="(e: InputEvent) => updateTodo(todo, (e.target as HTMLInputElement).value)"
+        @input="onInput(todo, $event)"
       />
 
       <!-- <TodoListAssignee :todo-id="todo.id" /> -->

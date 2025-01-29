@@ -1,6 +1,7 @@
-import { onMounted, ref } from 'vue';
-import { useIndexedDB } from '@/db/dao/useIndexed';
-import { Model } from 'pinia-orm';
+import { onMounted, ref } from "vue";
+import { useIndexedDB } from "@/db/dao/useIndexed";
+
+import { Model } from "pinia-orm";
 
 export function useModelStore<T extends typeof Model>(ModelClass: T) {
   const indexedDB = useIndexedDB(ModelClass);
@@ -40,6 +41,6 @@ export function useModelStore<T extends typeof Model>(ModelClass: T) {
     updateItem,
     deleteItem,
     fetchAll,
-    fetchOne
+    fetchOne,
   };
 }

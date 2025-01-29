@@ -1,26 +1,32 @@
+<script setup lang="ts">
+  import User from "@/models/User";
+  import UserList from "./UserList.vue";
+  import { useModelStore } from "@/db/dao/useModelStore";
+  const { items, createItem, updateItem, deleteItem } = useModelStore(User);
+
+  const create = async () => {
+    const user = new User();
+    user.name = "";
+    await createItem(user);
+  };
+  const remove = async (user: User) => {
+    await deleteItem(user.id);
+  };
+  const update = async (user: User) => {
+    await updateItem(user);
+  };
+</script>
 <template>
   <section class="Users">
     <div class="container">
       <div class="header">
         <h2 class="title">USERS</h2>
-        <v-btn variant="outlined" @click="add">ADD USER</v-btn>
+        <v-btn variant="outlined" @click="create">ADD USER</v-btn>
       </div>
-      <UserList />
+      <UserList :users="items" @update="update" @delete="remove" />
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-  import User from "@/models/User";
-  import UserList from "./UserList.vue";
-  import { useRepo } from "pinia-orm";
-
-  function add() {
-    useRepo(User).insert({
-      data: { name: "" },
-    });
-  }
-</script>
 
 <style scoped>
   .container {

@@ -1,18 +1,24 @@
     <script setup lang="ts">
       import User from "@/models/User";
-      import { useRepo } from "pinia-orm";
-      import { computed } from "vue";
-      const userRepo = useRepo(User);
-          
-          const users = computed(() => userRepo.with("todos").get());
-          
-          function destroy(user:User) {
-            useRepo(User).destroy(user.id);
-          };
-          
-          function update (user: User, title: string) {
-            useRepo(User).save({ id: user.id, name: title });
-          };
+      import { defineEmits } from "vue";
+
+
+      defineProps<{ users: User[] }>();
+         function onInput (user: User, e: Event) {
+            update(user, (e.target as HTMLInputElement).value);
+          }
+          function update (user: User, newName: string){
+            if (!user || !user.id) {
+        throw new Error('Invalid user data provided for update.');
+      }
+            user.name = newName;
+            $emit('update', user);
+
+          }
+          const $emit = defineEmits<{
+            (event: 'update', user: User): void
+            (event: 'delete', user: User): void
+          }>()
       
     </script>
 <template>
@@ -23,14 +29,14 @@
           class="input"
           :value="user.name"
           placeholder="Type in user's name!"
-          @input="(e: InputEvent) => update(user, (e.target as HTMLInputElement).value)"
+          @input="onInput(user, $event)"
         />
       </v-col>
       <v-col class="d-flex align-center">
         <p class="tasks">{{ user.todos.length }} Tasks</p>
       </v-col>
       <v-col class="d-flex align-end justify-end">
-        <v-btn icon flat @click="destroy(user)">
+        <v-btn icon flat @click="$emit('delete', user)">
           <v-icon>mdi-delete-outline</v-icon>
         </v-btn>
       </v-col>

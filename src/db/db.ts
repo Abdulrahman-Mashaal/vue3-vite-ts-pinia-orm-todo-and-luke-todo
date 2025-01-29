@@ -1,40 +1,53 @@
-import * as idb from 'idb';
+import * as idb from "idb";
 
-// export const STORE_NAME = 'todos';
-export const DB_NAME = 'todo_data_base';
-export const DB_VERSION = 1;
-// export const TXN_WRITE = 'readwrite';
+export const DB_NAME = "todo_data_base";
+export const DB_VERSION = 2;
 export const INDEXES = [
-    {
-        name: 'idx_done',
-        key: 'done',
-        unique: false
-    }
+  {
+    name: "idx_done",
+    key: "done",
+    unique: false,
+  },
 ];
 
 class DB {
-    static openDB(STORE_NAME: string): Promise<idb.IDBPDatabase> {
-        return idb.openDB(DB_NAME, DB_VERSION, {
-            upgrade(db) {
-                if (db.objectStoreNames.contains(STORE_NAME)) {
-                    db.deleteObjectStore(STORE_NAME);
-                }
+  private static stores = new Set<string>();
 
-                const store = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-                if (INDEXES.length > 0) {
-                    INDEXES.forEach((index) => {
-                        store.createIndex(index.name, index.key, { unique: index.unique });
-                    });
-                }
-                store.transaction.oncomplete = () => {
-                    console.log(`Store ${STORE_NAME} has been created`);
-                };
-                store.transaction.onerror = (e) => {
-                    console.log(e);
-                }
-            },
-        });
-    }
+  static async openDB(STORE_NAME: string): Promise<idb.IDBPDatabase> {
+    // Add store to the set
+    this.stores.add(STORE_NAME);
+
+    return idb.openDB(DB_NAME, DB_VERSION, {
+      upgrade(db) {
+        // Create all stores that don't exist
+        for (const storeName of DB.stores) {
+          if (!db.objectStoreNames.contains(storeName)) {
+            const store = db.createObjectStore(storeName, {
+              keyPath: "id",
+              autoIncrement: false,
+            });
+
+            // Add indexes if needed
+            if (INDEXES.length > 0) {
+              INDEXES.forEach((index) => {
+                store.createIndex(index.name, index.key, {
+                  unique: index.unique,
+                });
+              });
+            }
+
+            console.log(`Store ${storeName} has been created`);
+          }
+        }
+      },
+      blocked() {
+        console.log("Database upgrade was blocked");
+      },
+      blocking() {
+        console.log("Database is blocking an upgrade");
+      },
+    });
+  }
 }
 
 export { DB };
